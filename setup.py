@@ -1,12 +1,11 @@
 import os
-
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 here = os.path.abspath(os.path.dirname(__file__))
 
 about = {}
-with open(os.path.join(here, "doodledashboard", "__about__.py")) as f:
+with open(os.path.join(here, "sketchingdev", "__about__.py")) as f:
     exec(f.read(), about)
 
 setup(
@@ -15,14 +14,14 @@ setup(
     description="Console display for Doodle-Dashboard.",
     url="https://github.com/SketchingDev/Doodle-Dashboard-Console-Display",
     license="MIT",
-    packages=find_packages(),
+    packages=["sketchingdev"],
     install_requires=[
         "doodle-dashboard",
         "click"
     ],
     entry_points={
-        'doodledashboard.displays': [
-            'console=doodledashboard.customdisplay.consoledisplay:ConsoleDisplay'
+        "doodledashboard.customdisplays": [
+            "console=sketchingdev.custom:ConsoleDisplay"
         ]
     },
     classifiers=[
