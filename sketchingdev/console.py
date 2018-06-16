@@ -5,9 +5,8 @@ from doodledashboarddisplay.display import CanWriteText, CanDrawImage
 
 class ConsoleDisplay(Display, CanWriteText, CanDrawImage):
 
-    @staticmethod
-    def get_id():
-        return "console"
+    def __init__(self, size=click.get_terminal_size()):
+        self._size = size
 
     def clear(self):
         click.clear()
@@ -19,7 +18,11 @@ class ConsoleDisplay(Display, CanWriteText, CanDrawImage):
         click.echo("One day I'll draw an ASCII version of %s" % image_path)
 
     def _get_size(self):
-        return click.get_terminal_size()
+        return
+
+    @staticmethod
+    def get_id():
+        return "console"
 
     def __str__(self):
         return "Console display"
