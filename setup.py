@@ -21,7 +21,7 @@ setup(
     ],
     entry_points={
         "doodledashboard.customdisplays": [
-            "console=sketchingdev.custom:ConsoleDisplay"
+            "console=sketchingdev.console:ConsoleDisplay"
         ]
     },
     classifiers=[

@@ -1,2 +1,2 @@
 click==6.7
-doodle-dashboard-display==0.0.5
+doodle-dashboard-display==0.0.6
