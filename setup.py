@@ -15,8 +15,8 @@ setup(
     license="MIT",
     packages=["sketchingdev"],
     install_requires=[
-        "doodle-dashboard",
-        "click"
+        "click",
+        "doodle-dashboard-display"
     ],
     entry_points={
         "doodledashboard.customdisplays": [
