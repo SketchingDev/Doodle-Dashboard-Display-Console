@@ -1,5 +1,6 @@
 import click
-from sketchingdev.displays import Display, CanWriteText, CanDrawImage
+
+from doodledashboard.display import CanDrawImage, CanWriteText, Display
 
 
 class ConsoleDisplay(Display, CanWriteText, CanDrawImage):
