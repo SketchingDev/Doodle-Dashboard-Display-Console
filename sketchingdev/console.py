@@ -17,9 +17,6 @@ class ConsoleDisplay(Display, CanWriteText, CanDrawImage):
     def draw_image(self, image_path):
         click.echo("One day I'll draw an ASCII version of %s" % image_path)
 
-    def _get_size(self):
-        return
-
     @staticmethod
     def get_id():
         return "console"
