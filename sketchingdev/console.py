@@ -1,21 +1,23 @@
 import click
-from doodledashboarddisplay import Display
-from doodledashboarddisplay.display import CanWriteText, CanDrawImage
+from doodledashboard.display import Display
+from doodledashboard.notifications import TextNotification, ImageNotification
 
 
-class ConsoleDisplay(Display, CanWriteText, CanDrawImage):
+class ConsoleDisplay(Display):
 
     def __init__(self, size=click.get_terminal_size()):
         self._size = size
 
-    def clear(self):
+    def draw(self, notification):
         click.clear()
+        if isinstance(notification, TextNotification):
+            click.echo(notification.get_text())
+        elif isinstance(notification, ImageNotification):
+            click.echo("Image: %s" % notification.get_image_path())
 
-    def write_text(self, text):
-        click.echo(text)
-
-    def draw_image(self, image_path):
-        click.echo("One day I'll draw an ASCII version of %s" % image_path)
+    @staticmethod
+    def get_supported_notifications():
+        return [TextNotification, ImageNotification]
 
     @staticmethod
     def get_id():
