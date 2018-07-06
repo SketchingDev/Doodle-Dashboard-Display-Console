@@ -33,6 +33,7 @@ class TestConsoleDisplay(unittest.TestCase):
 
         self.assertEqual(console_output, result.output)
 
+
 def create_cmd(func):
     @click.command()
     def c(f=func):
