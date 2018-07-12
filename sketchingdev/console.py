@@ -1,4 +1,5 @@
 import click
+from doodledashboard.configuration.config import ConfigSection
 from doodledashboard.display import Display
 from doodledashboard.notifications import TextNotification, ImageNotification
 
@@ -25,3 +26,17 @@ class ConsoleDisplay(Display):
 
     def __str__(self):
         return "Console display"
+
+    @staticmethod
+    def get_config_factory():
+        return ConsoleConfig()
+
+
+class ConsoleConfig(ConfigSection):
+
+    @property
+    def id_key_value(self):
+        return "display", "console"
+
+    def create(self, config_section):
+        return ConsoleDisplay()

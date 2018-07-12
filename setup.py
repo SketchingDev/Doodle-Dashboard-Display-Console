@@ -16,7 +16,7 @@ setup(
     packages=["sketchingdev"],
     install_requires=[
         "click",
-        "doodle-dashboard>=0.0.14"
+        "doodle-dashboard>=0.0.16"
     ],
     entry_points={
         "doodledashboard.customdisplays": [
