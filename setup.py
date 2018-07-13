@@ -19,7 +19,7 @@ setup(
         "doodle-dashboard>=0.0.16"
     ],
     entry_points={
-        "doodledashboard.customdisplays": [
+        "doodledashboard.custom.displays": [
             "console=sketchingdev.console:ConsoleDisplay"
         ]
     },
