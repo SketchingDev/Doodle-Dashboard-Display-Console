@@ -1,21 +1,23 @@
 import click
 import unittest
 from click.testing import CliRunner
+from doodledashboard.notifications import ImageNotification
 
 from sketchingdev.console import ConsoleDisplay
 
 
-class TestConsoleDisplay(unittest.TestCase):
+class TestConsoleDisplayWithImages(unittest.TestCase):
 
-    def test_id(self):
-        self.assertEqual("console", ConsoleDisplay().get_id())
+    def test_draw_image(self):
+        image_path = "/path/to/image"
+        console_output = "Image: /path/to/image"
 
-    def test_nothing_drawn_for_unsupported_notifications(self):
-        image_notification = None
+        image_notification = ImageNotification()
+        image_notification.set_image_path(image_path)
         cmd = create_cmd(lambda: ConsoleDisplay().draw(image_notification))
         result = CliRunner().invoke(cmd, catch_exceptions=False)
 
-        self.assertEqual("", result.output)
+        self.assertEqual(console_output, result.output)
 
 
 def create_cmd(func):

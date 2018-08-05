@@ -3,22 +3,35 @@ from doodledashboard.configuration.config import ConfigSection
 from doodledashboard.display import Display
 from doodledashboard.notifications import TextNotification, ImageNotification
 
+from sketchingdev.notifications.image import format_image
+from sketchingdev.notifications.text import format_text
+
 
 class ConsoleDisplay(Display):
+
+    _NOTIFICATIONS = {
+        TextNotification: format_text,
+        ImageNotification: format_image
+    }
 
     def __init__(self, size=click.get_terminal_size()):
         self._size = size
 
     def draw(self, notification):
         click.clear()
-        if isinstance(notification, TextNotification):
-            click.echo(notification.get_text())
-        elif isinstance(notification, ImageNotification):
-            click.echo("Image: %s" % notification.get_image_path())
+        factory = self.find_factory(notification)
+        click.echo(factory(self._size, notification), nl=False)
+
+    def find_factory(self, notification, default=lambda x, y: ""):
+        for factory_type, factory in self._NOTIFICATIONS.items():
+            if isinstance(notification, factory_type):
+                return factory
+
+        return default
 
     @staticmethod
     def get_supported_notifications():
-        return [TextNotification, ImageNotification]
+        return ConsoleDisplay._NOTIFICATIONS.keys()
 
     @staticmethod
     def get_id():
