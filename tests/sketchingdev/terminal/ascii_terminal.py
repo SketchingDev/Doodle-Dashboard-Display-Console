@@ -39,7 +39,8 @@ class AsciiTerminal:
 
     @staticmethod
     def _strip_chars_outside_terminal_border(target_lines):
-        left_stripped = map(lambda x: x.lstrip(), target_lines)
+        left_stripped = map(lambda x: x.lstrip(" "), target_lines)
+        # right_stripped = map(lambda line: line.rstrip(" "), left_stripped)
         non_empty = filter(lambda l: len(l) > 0, left_stripped)
         return list(non_empty)
 
@@ -64,8 +65,7 @@ class AsciiTerminal:
     def _remove_border(lines):
         without_width_indicators = lines[1:-1]
         without_pipes = map(lambda line: line[1:], without_width_indicators)
-        without_trailing_whitespace = map(lambda line: line.rstrip(), without_pipes)
-        text = "\n".join(list(without_trailing_whitespace))
+        text = "\n".join(list(without_pipes))
         return text.rstrip()
 
     @staticmethod
@@ -80,7 +80,6 @@ class AsciiTerminal:
         lines = text.split("\n")
         cleaned = AsciiTerminal._strip_chars_outside_terminal_border(lines)
         AsciiTerminal._validate(cleaned)
-
         size = AsciiTerminal._extract_size(cleaned)
         text = AsciiTerminal._remove_border(cleaned)
         return AsciiTerminal(size, text)

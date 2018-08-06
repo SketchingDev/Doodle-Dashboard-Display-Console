@@ -1,5 +1,5 @@
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -13,7 +13,7 @@ setup(
     description="Console display for Doodle-Dashboard.",
     url="https://github.com/SketchingDev/Doodle-Dashboard-Console-Display",
     license="MIT",
-    packages=["sketchingdev"],
+    packages=find_packages(exclude=["tests"]),
     install_requires=[
         "click",
         "doodle-dashboard>=0.0.16"
