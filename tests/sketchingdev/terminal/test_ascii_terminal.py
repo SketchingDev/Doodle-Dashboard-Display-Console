@@ -78,7 +78,7 @@ class AsciiTerminalTests(unittest.TestCase):
         text_terminal = """
                 +----+
                 |   A|
-                |  B| 
+                |  B|
                 ||
                 +----+
                 """
