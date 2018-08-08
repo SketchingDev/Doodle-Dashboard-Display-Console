@@ -1,4 +1,5 @@
 from PIL import Image
+from sketchingdev.notifications.centre import centre_in_container
 
 GREYSCALE_CHARS = ['@', '%', '#', '*', '+', '=', '-', ':', ',', '.', ' ']
 GREYSCALE_CHARS_MAX_INDEX = len(GREYSCALE_CHARS) - 1
@@ -24,9 +25,10 @@ def convert_image_to_ascii(image):
     ascii_rows = []
     for row in rows:
         textual_row = "".join([map_pixel_to_character(pixel) for pixel in row])
+
         ascii_rows.append(textual_row)
 
-    return "\n".join(ascii_rows).rstrip()
+    return ascii_rows
 
 
 def format_image(size, notification):
@@ -38,4 +40,7 @@ def format_image(size, notification):
         return "ERROR\nUnable to open image: %s" % notification.get_image_path()
 
     image.thumbnail(size, Image.ANTIALIAS)
-    return convert_image_to_ascii(image)
+    ascii_image = convert_image_to_ascii(image)
+    centred_image = centre_in_container(ascii_image, size)
+
+    return "\n".join(centred_image).rstrip("\n")

@@ -11,54 +11,54 @@ from tests.sketchingdev.terminal.ascii_terminal import AsciiTerminal
 class TestConsoleDisplayWithText(unittest.TestCase):
 
     @parameterized.expand([
-        ("",
+        ((1, 1), "",
          """
          +-+
-         |
+         ||
          +-+
          """),
-        ("a",
+        ((10, 3), "a",
          """
          +----------+
-         |
-         |    a
-         |
+         ||
+         |    a|
+         ||
          +----------+
          """),
-        ("centred",
+        ((10, 3), "centred",
          """
          +----------+
-         |
-         | centred
-         |
+         ||
+         | centred|
+         ||
          +----------+
          """),
-        ("I'm centred",
+        ((10, 3), "I'm centred",
          """
          +----------+
-         |   I'm
-         | centred
-         |
+         |   I'm|
+         | centred|
+         ||
          +----------+
          """),
-        ("Hello World! This is too long",
+        ((10, 3), "Hello World! This is too long",
          """
          +----------+
-         |  Hello
-         |  World!
-         | This is
+         |  Hello|
+         |  World!|
+         | This is|
          +----------+
          """),
     ])
-    def test_text_centred_in_console(self, input_text, expected_ascii_terminal):
-        expected_terminal = AsciiTerminal.parse(expected_ascii_terminal)
+    def test_text_centred_in_console(self, console_size, input_text, expected_ascii_terminal):
+        expected_terminal = AsciiTerminal.extract_text(expected_ascii_terminal)
 
         text_notification = TextNotification()
         text_notification.set_text(input_text)
-        cmd = create_cmd(lambda: ConsoleDisplay(expected_terminal.get_size()).draw(text_notification))
+        cmd = create_cmd(lambda: ConsoleDisplay(console_size).draw(text_notification))
         result = CliRunner().invoke(cmd, catch_exceptions=False)
 
-        self.assertEqual(expected_terminal.get_text(), result.output)
+        self.assertEqual(expected_terminal, result.output)
 
 
 def create_cmd(func):

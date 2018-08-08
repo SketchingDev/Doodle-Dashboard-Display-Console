@@ -15,37 +15,28 @@ class AsciiTerminal:
     as:
 
     +-----+
-    |
-    |
-    |
-    |
-    |
+    |     |
+    |     |
+    |     |
+    |     |
+    |     |
     +-----+
-
-    The first line is used to determine the width and left-hand pipes the height.
     """
 
     _WIDTH_REGEX = re.compile("\s*\+([-]+)\+")
 
-    def __init__(self, size, text):
-        self._size = size
-        self._text = text
-
-    def get_text(self):
-        return self._text
-
-    def get_size(self):
-        return self._size
-
     @staticmethod
     def _strip_chars_outside_terminal_border(target_lines):
-        left_stripped = map(lambda x: x.lstrip(" "), target_lines)
-        # right_stripped = map(lambda line: line.rstrip(" "), left_stripped)
-        non_empty = filter(lambda l: len(l) > 0, left_stripped)
+        spaces_stripped = map(lambda x: x.strip(" "), target_lines)
+        non_empty = filter(lambda l: len(l) > 0, spaces_stripped)
         return list(non_empty)
 
     @staticmethod
     def _validate(lines):
+        def any_filtered(filter_func, items):
+            results = list(filter(filter_func, items))
+            return len(results) > 0
+
         if len(lines) < 2:
             raise ValidationError("ASCII terminal must contain at width indicator at top and bottom")
 
@@ -56,30 +47,27 @@ class AsciiTerminal:
             raise ValidationError("Last line must be a width indicator")
 
         if len(lines) > 2:
-            lines_without_pipe_at_start = filter(lambda line: line[0] != "|", lines[1:-1])
+            console_lines = lines[1:-1]
 
-            if len(list(lines_without_pipe_at_start)) is not 0:
+            if any_filtered(lambda line: len(line) < 2, console_lines):
+                raise ValidationError("All lines between width indicators contain at least two pipes")
+
+            if any_filtered(lambda line: line[0] != "|", console_lines):
                 raise ValidationError("All lines between width indicators must start with a pipe")
+
+            if any_filtered(lambda line: line[-1] != "|", console_lines):
+                raise ValidationError("All lines between width indicators must end with a pipe")
 
     @staticmethod
     def _remove_border(lines):
         without_width_indicators = lines[1:-1]
-        without_pipes = map(lambda line: line[1:], without_width_indicators)
+        without_pipes = map(lambda line: line[1:-1], without_width_indicators)
         text = "\n".join(list(without_pipes))
-        return text.rstrip()
+        return text.rstrip("\n")
 
     @staticmethod
-    def _extract_size(lines):
-        match = AsciiTerminal._WIDTH_REGEX.match(lines[0])
-        width = len(match.group(1))
-        height = len(lines) - 2
-        return width, height
-
-    @staticmethod
-    def parse(text):
+    def extract_text(text):
         lines = text.split("\n")
         cleaned = AsciiTerminal._strip_chars_outside_terminal_border(lines)
         AsciiTerminal._validate(cleaned)
-        size = AsciiTerminal._extract_size(cleaned)
-        text = AsciiTerminal._remove_border(cleaned)
-        return AsciiTerminal(size, text)
+        return AsciiTerminal._remove_border(cleaned)
