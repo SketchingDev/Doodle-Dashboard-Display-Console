@@ -1,5 +1,17 @@
-from PIL import Image
+from sketchingdev.notifications.error import contains_all_in_error_message
 from sketchingdev.notifications.centre import centre_in_container
+
+try:
+    from PIL import Image
+except ImportError as err:
+    if contains_all_in_error_message(err, ["libopenjp2.so.7", "no such file or directory"]):
+        raise ImportError(
+            "Your device is missing the dependency 'libopenjp2-7', which is used by the library 'Pillow' to " +
+            "allow me to access pixels from the image to draw as ASCII characters. Don't worry though! It should be " +
+            "easy enough to install by running 'sudo apt-get install libopenjp2-7'"
+        )
+    else:
+        raise
 
 GREYSCALE_CHARS = ['@', '%', '#', '*', '+', '=', '-', ':', ',', '.', ' ']
 GREYSCALE_CHARS_MAX_INDEX = len(GREYSCALE_CHARS) - 1
