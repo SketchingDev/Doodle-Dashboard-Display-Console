@@ -16,7 +16,8 @@ setup(
     packages=find_packages(exclude=["tests"]),
     install_requires=[
         "click",
-        "doodle-dashboard>=0.0.16"
+        "doodle-dashboard>=0.0.16",
+        "Pillow>=5.0.0, <6.0.0"
     ],
     entry_points={
         "doodledashboard.custom.displays": [
